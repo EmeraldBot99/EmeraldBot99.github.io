@@ -154,6 +154,21 @@ actionButton.addEventListener("click", function (event){
 
 });
 
+const deleteButton = document.getElementById("DeleteButton");
+deleteButton.addEventListener("click", function (event){
+    let deleted = true;
+    while(deleted){
+        deleted = false;
+        for(let i = 0; i < world.length; i++){
+            if(world[i].held){
+                world.splice(i,1);
+                deleted = true;
+            }
+        }
+    }
+
+});
+
 
 function main(){
     render()
