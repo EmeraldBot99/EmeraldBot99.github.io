@@ -30,11 +30,11 @@ function calculateField(x,y){
 function render(){
 
         //constants
-        const smoothness = document.getElementById('Smoothness').value;
+        const smoothness = document.getElementById('Smoothness').value ** Math.log(world.length);
         const saturation = document.getElementById('Saturation').value;
         const lineThickness = document.getElementById('Thickness').value;
 
-
+        const drawGrid = document.getElementById("gridLines").checked;
         //draw field
         const imageData = ctx.createImageData(canvas.width, canvas.height);
         const buffer = imageData.data;
@@ -49,27 +49,21 @@ function render(){
                 const idx = (yOffset + x) << 2; 
                 let r,g,b = 0;
                 
-
-
-
                 //lines present if thickess < smoothness    
-                if(Math.abs(totalField % smoothness ** world.length )< lineThickness){
+                if(Math.abs(totalField % smoothness )< lineThickness){
                     if (totalField > 0){
                         r = Math.log(Math.abs(totalField)) * saturation * 2;
-                        g = 0;
-                        b = 0;
                     }else if (totalField < 0){
                         g = Math.log(Math.abs(totalField)) * saturation * 2;
-                        r = 0;
-                        b = 0;
                     }
                 }
+
                 //draw grid
-                if( (x % 100 <= 0.5 || y % 100 <= 0.5) && document.getElementById("gridLines").checked){
-                    r,g,b = 255;
+                if( (x % 100 <= 0.5 || y % 100 <= 0.5) && drawGrid){
+                    r = 100;
+                    g = 100;
+                    b = 100;
                 }
-
-
 
                 //rgba
                 buffer[idx] = r;
