@@ -53,7 +53,7 @@ function render(){
 
 
                 //lines present if thickess < smoothness    
-                if(Math.abs(totalField % smoothness )< lineThickness){
+                if(Math.abs(totalField % smoothness ** world.length )< lineThickness){
                     if (totalField > 0){
                         r = Math.log(Math.abs(totalField)) * saturation * 2;
                         g = 0;
