@@ -21,7 +21,7 @@ function calculateField(x,y){
     world.forEach(obj => {          
         const roughDist = Math.abs(obj.x - x) + Math.abs(obj.y - y);
         const maxPossibleField = Math.abs(obj.charge) * 8.99E2 / roughDist;
-        if (maxPossibleField > 1) {
+        if (maxPossibleField >1) {
             let dist = Math.sqrt((obj.x -x) ** 2 + (obj.y-y) ** 2);
             totalField += obj.charge/dist * (8.99E2);
         }
@@ -49,21 +49,29 @@ function render(){
             for (let x = 0; x < canvas.width; x++) {
                 
                 let totalField = calculateField(x,y);
-
-
                 const idx = (yOffset + x) << 2; 
                 let r,g,b = 0;
+                
+                //draw grid
+
+                if( x % 100 <= 0.5 || y % 100 <= 0.5){
+                    r,g,b = 255;
+                }
 
                 //lines present if thickess < smoothness    
                 if(Math.abs(totalField % smoothness )< lineThickness){
-                    if (totalField > 0){
+                    if (totalField > 2.5){
                         r = Math.log(Math.abs(totalField)) * saturation * 2;
                         g = 0;
-                    }else if (totalField < 0){
+                        b = 0;
+                    }else if (totalField < -2.5){
                         g = Math.log(Math.abs(totalField)) * saturation * 2;
                         r = 0;
+                        b = 0;
                     }
                 }
+
+
 
                 //rgba
                 buffer[idx] = r;
@@ -106,9 +114,24 @@ document.addEventListener("mousemove", function (event) {
         if (obj.held) {
             obj.x = mx;
             obj.y = my;
+            
+            //snap to grid
+            if (event.shiftKey) {
+                const snapX = Math.round(mx / 100) * 100;
+                const snapY = Math.round(my / 100) * 100;
+
+                const dx = Math.abs(mx - snapX);
+                const dy = Math.abs(my - snapY);
+
+                if (dx < 30 && dy < 30) {   // 50px threshold
+                    obj.x = snapX;
+                    obj.y = snapY;
+                    console.log("true");
+                }
+            }
         }
     });
-
+    
     const fieldVal = calculateField(mx, my);
     textBox.innerText = "Field at mouse position is: " + (Number.isFinite(fieldVal) ? fieldVal.toFixed(3) : (fieldVal === Infinity ? "Infinity" : "N/A"));
 });
