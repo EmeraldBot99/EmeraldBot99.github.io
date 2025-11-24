@@ -31,8 +31,8 @@ function render(){
 
         //constants
         const smoothness = document.getElementById('Smoothness').value;
-        const saturation = document.getElementById('Saturation').value;;
-        const lineThickness = document.getElementById('Thickness').value;;
+        const saturation = document.getElementById('Saturation').value;
+        const lineThickness = document.getElementById('Thickness').value;
 
 
         //draw field
@@ -49,7 +49,7 @@ function render(){
                 const idx = (yOffset + x) << 2; 
                 let r,g,b = 0;
                 
-                //draw grid
+
 
 
                 //lines present if thickess < smoothness    
@@ -64,8 +64,8 @@ function render(){
                         b = 0;
                     }
                 }
-
-                if( x % 100 <= 0.5 || y % 100 <= 0.5){
+                //draw grid
+                if( (x % 100 <= 0.5 || y % 100 <= 0.5) && document.getElementById("gridLines").checked){
                     r,g,b = 255;
                 }
 
