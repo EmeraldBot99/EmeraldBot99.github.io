@@ -19,13 +19,10 @@ class ChargedObject{
 function calculateField(x,y){
     let totalField = 0;
     world.forEach(obj => {          
-        const roughDist = Math.abs(obj.x - x) + Math.abs(obj.y - y);
-        const maxPossibleField = Math.abs(obj.charge) * 8.99E2 / roughDist;
-        if (maxPossibleField >1) {
-            let dist = Math.sqrt((obj.x -x) ** 2 + (obj.y-y) ** 2);
-            totalField += obj.charge/dist * (8.99E2);
-        }
 
+
+        let dist = Math.sqrt((obj.x -x) ** 2 + (obj.y-y) ** 2);
+        totalField += obj.charge/dist * (8.99E2);
     });
     return totalField;
 }
@@ -54,21 +51,22 @@ function render(){
                 
                 //draw grid
 
-                if( x % 100 <= 0.5 || y % 100 <= 0.5){
-                    r,g,b = 255;
-                }
 
                 //lines present if thickess < smoothness    
                 if(Math.abs(totalField % smoothness )< lineThickness){
-                    if (totalField > 2.5){
+                    if (totalField > 0){
                         r = Math.log(Math.abs(totalField)) * saturation * 2;
                         g = 0;
                         b = 0;
-                    }else if (totalField < -2.5){
+                    }else if (totalField < 0){
                         g = Math.log(Math.abs(totalField)) * saturation * 2;
                         r = 0;
                         b = 0;
                     }
+                }
+
+                if( x % 100 <= 0.5 || y % 100 <= 0.5){
+                    r,g,b = 255;
                 }
 
 
